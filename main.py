@@ -17,8 +17,9 @@ while True:
     avg_right = sum(cs2.raw) / 3
     # print(avg_left, avg_right)
     if avg_right > avg_left:
-        tank_drive.on_for_seconds(SpeedPercent(-10), SpeedPercent(-15), 0.5)
+        tank_drive.on_for_seconds(SpeedPercent(-10), SpeedPercent(-15), 0.5) # turn left
     else:
-        tank_drive.on_for_seconds(SpeedPercent(-15), SpeedPercent(-10), 0.5)
-
-    sleep(0.5)
+        tank_drive.on_for_seconds(SpeedPercent(-15), SpeedPercent(-10), 0.5) # turn right
+    if avg_left > 180 and avg_right > 180:
+        pass # find the way
+    # sleep(0.5)
