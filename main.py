@@ -3,23 +3,42 @@ from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank
 from ev3dev2.sensor.lego import ColorSensor
 from time import sleep
 
-cs1 = ColorSensor(INPUT_1)
 cs2 = ColorSensor(INPUT_2)
+cs1 = ColorSensor(INPUT_1)
 
 tank_drive = MoveTank(OUTPUT_A, OUTPUT_B)
 
+squareTurn = 5
+rollingTime = 0.2
+# print(dir(tank_drive))
+# exit()
+
+
+def getColor():
+    return sum(cs1.raw)/3, sum(cs2.raw)/3
+
 
 while True:
-    # print(cs1.raw)
-    # print(cs2.raw)
-    # tank_drive.on_for_seconds(SpeedPercent(60), SpeedPercent(30), 3)
     avg_left = sum(cs1.raw) / 3
     avg_right = sum(cs2.raw) / 3
     # print(avg_left, avg_right)
     if avg_right > avg_left:
-        tank_drive.on_for_seconds(SpeedPercent(-10), SpeedPercent(-15), 0.5) # turn left
+        tank_drive.on_for_seconds(
+            SpeedPercent(-5), SpeedPercent(-20), rollingTime)  # turn left
     else:
-        tank_drive.on_for_seconds(SpeedPercent(-15), SpeedPercent(-10), 0.5) # turn right
-    if avg_left > 180 and avg_right > 180:
-        pass # find the way
+        tank_drive.on_for_seconds(
+            SpeedPercent(-20), SpeedPercent(-5), rollingTime)  # turn right
+    if min(getColor()) > 130:
+        cnt = 0
+        while min(getColor()) > 130 and cnt < squareTurn:
+            tank_drive.on_for_seconds(SpeedPercent(
+                20), SpeedPercent(-20), rollingTime)  # turn left
+            cnt += 1
+
+        cnt = 0
+        while min(getColor()) > 130 and cnt < 2*squareTurn:
+            tank_drive.on_for_seconds(
+                SpeedPercent(-20), SpeedPercent(20), rollingTime)  # turn right
+            cnt += 1
+
     # sleep(0.5)
