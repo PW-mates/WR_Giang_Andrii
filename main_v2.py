@@ -15,11 +15,11 @@ class Logger:
     def __init__(self) -> None:
         print("Logger start")
 
-    def print_rgb_sensor():
+    def print_rgb_sensor(self):
         print(f"sensor1 = {cs1.rgb}")
         print(f"sensor2 = {cs1.rgb}")
 
-    def print_distance_sensor():
+    def print_distance_sensor(self):
         pass
 
 
@@ -59,30 +59,22 @@ def turn_right():
     tank_drive.on_for_seconds(
         SpeedPercent(-20), SpeedPercent(-5), rollingTime)
 
+# def scann_surface():
+#     if 
 
 time_start = time()
 log = Logger()
-
+right_speed = 3
+left_speed = 3
 while True:
-    if time_start - time() > 3:
+    if time() - time_start > 0.1:
         log.print_rgb_sensor()
         time_start = time()
-
-    if sum(get_color_sensor_2) / 3 > sum(get_color_sensor_1) / 3:
-        turn_left()
+    tank_drive.on(left_speed, right_speed)
+    if sum(get_color_sensor_2()) / 3 > sum(get_color_sensor_1()) / 3:
+        right_speed = right_speed - 0.3
+        left_speed = left_speed + 0.3
     else:
-        turn_right()
-    if min(get_color_sensors()) > 130:
-        cnt = 0
-        while min(get_color_sensors()) > 130 and cnt < squareTurn:
-            tank_drive.on_for_seconds(SpeedPercent(
-                20), SpeedPercent(-20), rollingTime)  # turn left
-            cnt += 1
-
-        cnt = 0
-        while min(get_color_sensors()) > 130 and cnt < 2*squareTurn:
-            tank_drive.on_for_seconds(
-                SpeedPercent(-20), SpeedPercent(20), rollingTime)  # turn right
-            cnt += 1
-
-    # sleep(0.5)
+        right_speed = right_speed + 0.3
+        left_speed = left_speed - 0.3
+ 
