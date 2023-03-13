@@ -3,15 +3,25 @@ from ev3dev2.motor import LargeMotor, OUTPUT_A, OUTPUT_B, SpeedPercent, MoveTank
 from ev3dev2.sensor.lego import ColorSensor
 from time import sleep, time
 
-BLACK = (0, 0, 0)
-WHITE = (258, 258, 258)
-YELLOW = ()
-RED = ()
-GREEN = ()
+BLACK = [0, 0, 0]
+WHITE = [255, 255, 255]
+YELLOW = [5, 5, 5]
+RED = [5, 5, 5]
+GREEN = [5, 5, 5]
 
 cs1 = ColorSensor(INPUT_1)
 cs2 = ColorSensor(INPUT_2)
+tank_drive = MoveTank(OUTPUT_A, OUTPUT_B)
 
+# log = Logger()
+INITIAL_RIGHT_SPEED = 15
+INITIAL_LEFT_SPEED = 15
+MIN_SPEED = -5
+MAX_SPEED = 20
+STEP = 0.2
+
+right_speed = INITIAL_RIGHT_SPEED
+left_speed = INITIAL_LEFT_SPEED
 
 # class Logger:
 
@@ -26,57 +36,50 @@ cs2 = ColorSensor(INPUT_2)
 #         pass
 
 
-tank_drive = MoveTank(OUTPUT_A, OUTPUT_B)
-
-squareTurn = 5
-rollingTime = 0.2
-
-
 def get_color_sensor_1():
     # LEFT
     return cs1.rgb
-
 
 def get_color_sensor_2():
     # RIGHT
     return cs2.rgb
 
-
 def get_color_sensors():
-    return (get_color_sensor_1, get_color_sensor_2)
+    return (get_color_sensor_1(), get_color_sensor_2())
+    
+def check_zone():
+    sensors = get_color_sensors()
+    if sensors == (RED, RED):
+        print("RED Zone")
+    if sensors == (YELLOW, YELLOW):
+        print("YELLOW Zone")
+    if sensors == (GREEN, GREEN):
+        print("GREEN Zone")
 
 
-def turn(angle):
-    pass
+def correct_speed():
+    global left_speed
+    global right_speed
+    if sum(get_color_sensor_2()) / 3 > sum(get_color_sensor_1()) / 3:
+        if left_speed < right_speed:
+            left_speed = INITIAL_LEFT_SPEED
+            right_speed = INITIAL_RIGHT_SPEED
+        else:
+            right_speed = max(MIN_SPEED, right_speed - STEP)
+            left_speed = min(MAX_SPEED, left_speed + STEP)
+    else:
+        if left_speed > right_speed:
+            left_speed = INITIAL_LEFT_SPEED
+            right_speed = INITIAL_RIGHT_SPEED
+        else:
+            right_speed = min(MAX_SPEED, right_speed + STEP)
+            left_speed = max(MIN_SPEED, left_speed - STEP)
 
 
-def turn_left():
-    tank_drive.on_for_seconds(
-        SpeedPercent(-5), SpeedPercent(-20), rollingTime)
 
-
-def turn_right():
-    tank_drive.on_for_seconds(
-        SpeedPercent(-20), SpeedPercent(-5), rollingTime)
-
-# def scann_surface():
-#     if
-
-
-time_start = time()
-# log = Logger()
-right_speed = -3
-left_speed = -3
 print("start")
 while True:
-    if time() - time_start > 0.1:
-        # log.print_rgb_sensor()
-
-        time_start = time()
     tank_drive.on(left_speed, right_speed)
-    if sum(get_color_sensor_2()) / 3 > sum(get_color_sensor_1()) / 3:
-        right_speed = right_speed + 0.3
-        left_speed = left_speed - 0.3
-    else:
-        right_speed = right_speed - 0.3
-        left_speed = left_speed + 0.3
+    correct_speed()
+    check_zone()
+    
