@@ -10,19 +10,6 @@ RED = ()
 GREEN = ()
 
 
-# class Logger:
-
-#     def __init__(self) -> None:
-#         print("Logger start")
-
-#     def print_rgb_sensor():
-#         print(f"sensor1 = {cs1.rgb}")
-#         print(f"sensor2 = {cs1.rgb}")
-
-#     def print_distance_sensor():
-#         pass
-
-
 cs1 = ColorSensor(INPUT_1)
 cs2 = ColorSensor(INPUT_2)
 
