@@ -42,7 +42,10 @@ def normal_running(priority=None):
     avg_left = sum(cs1.raw) / 3
     avg_right = sum(cs2.raw) / 3
 
-    if avg_right > avg_left or check_color(cs1) == priority:
+    if abs(avg_right - avg_left) <= 30:
+        tank_drive.on_for_seconds(
+            SpeedPercent(-15), SpeedPercent(-15), rollingTime)  # go straigh
+    elif avg_right > avg_left or check_color(cs1) == priority:
         tank_drive.on_for_seconds(
             SpeedPercent(-5), SpeedPercent(-25), rollingTime)  # turn left
     else:
@@ -69,12 +72,18 @@ class Mission(Enum):
 
 def pick_up():
     my_motor.on_for_seconds(SpeedRPM(20), 3)
-    pass
+    
+    tank_drive.on_for_seconds(
+        SpeedPercent(30), SpeedPercent(-30), 1)  # turn back
 
 
 def delivery():
     my_motor.on_for_seconds(SpeedRPM(-20), 3)
-    pass
+    
+    tank_drive.on_for_seconds(
+        SpeedPercent(50), SpeedPercent(50), 1)  # turn back
+    tank_drive.on_for_seconds(
+        SpeedPercent(50), SpeedPercent(-50), 5)  # cheer
 
 
 def main():
