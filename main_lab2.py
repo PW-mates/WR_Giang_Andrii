@@ -71,9 +71,9 @@ class TaskExecution:
         if self._is_turned:
             pass
         elif self._tmp_side_flag == Side.LEFT:
-            tank_drive.on_for_seconds(SpeedPercent(-5), SpeedPercent(-20), 1)  # should turn left
+            tank_drive.on_for_seconds(SpeedPercent(10), SpeedPercent(-20), 2)  # should turn left
         elif self._tmp_side_flag == Side.RIGHT:
-            tank_drive.on_for_seconds(SpeedPercent(-20), SpeedPercent(-5), 1)  # should turn right
+            tank_drive.on_for_seconds(SpeedPercent(-20), SpeedPercent(10), 2)  # should turn right
         exit()
 
     def event_check(self):
