@@ -71,9 +71,11 @@ class TaskExecution:
         if self.current_mission == Mission.PATH_TO_PARCEL and \
                 (ccs1 == self.path_to_parcel_color or ccs2 == self.path_to_parcel_color):
             self.current_mission = Mission.FROM_PATH_TO_PARCEL
+            print("FROM_PATH_TO_PARCEL")
         if self.current_mission == Mission.FROM_PATH_TO_PARCEL and \
                 (ccs1 == self.parcel_zone_color and ccs2 == self.parcel_zone_color):
             self.current_mission = Mission.PICK_UP
+            print("PICK_UP")
 
     def update_data(self, col_sens_1, col_sens_2):
         self.col_sens_1 = col_sens_1
@@ -85,6 +87,9 @@ class TaskExecution:
             self.normal_running()
         if self.current_mission is Mission.PICK_UP:
             self.pick_up()
+        if self.current_mission is Mission.FROM_PATH_TO_PARCEL:
+            tank_drive.on_for_seconds(SpeedPercent(30), SpeedPercent(-30), 1)  # turn back            
+            exit()
 
 
 class Color(Enum):
@@ -107,7 +112,7 @@ class Mission(Enum):
 
 def check_color(cs):
     r, g, b = cs.raw
-    print(r, g, b)
+    # print(r, g, b)
     if r < 80 and g < 80 and b > 100:
         return Color.BLUE, (r+g+b)/3
     if r > 100 and g < 80 and b < 80:
@@ -123,7 +128,7 @@ def run_loop(tasks: TaskExecution):
     while (True):
         ccs1, rgbcs1 = check_color(cs1)
         ccs2, rgbcs2 = check_color(cs2)
-        tasks.update_status((ccs1, rgbcs1), (ccs2, rgbcs2))
+        tasks.update_data((ccs1, rgbcs1), (ccs2, rgbcs2))
         tasks.run_events()
 
 
@@ -138,6 +143,7 @@ def main():
                           delivery_zone_color=delivery_zone_color,
                           path_to_parcel_color=path_to_parcel_color,
                           path_to_delivery_color=path_to_delivery_color,)
+    print("init Tasks")
     run_loop(tasks)
 
 
