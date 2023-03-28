@@ -37,9 +37,9 @@ class TaskExecution:
         if abs(avg_right - avg_left) <= param:
             tank_drive.on(-10, -10)
         elif avg_right > avg_left:
-            tank_drive.on(15, -5) # Turn left
+            tank_drive.on(15, -5)  # Turn left
         else:
-            tank_drive.on(-5, 15) # Turn right
+            tank_drive.on(-5, 15)  # Turn right
 
     def correct_picking_position(self):
         print("Correct me!")
@@ -66,15 +66,18 @@ class TaskExecution:
             SpeedPercent(50), SpeedPercent(50), 1)  # turn back
         tank_drive.on_for_seconds(
             SpeedPercent(50), SpeedPercent(-50), 5)  # cheer
-    
+
     def from_path_to_parcel(self):
         if self._is_turned:
             pass
         elif self._tmp_side_flag == Side.LEFT:
-            tank_drive.on_for_seconds(SpeedPercent(10), SpeedPercent(-20), 2)  # should turn left
+            tank_drive.on_for_seconds(SpeedPercent(
+                7), SpeedPercent(-15), 2)  # should turn left
+            self._is_turned = True
         elif self._tmp_side_flag == Side.RIGHT:
-            tank_drive.on_for_seconds(SpeedPercent(-20), SpeedPercent(10), 2)  # should turn right
-        exit()
+            tank_drive.on_for_seconds(
+                SpeedPercent(-15), SpeedPercent(7), 2)  # should turn right
+            self._is_turned = True
 
     def event_check(self):
         ccs1, avg_left = self.col_sens_1
@@ -84,11 +87,11 @@ class TaskExecution:
             self.current_mission = Mission.FROM_PATH_TO_PARCEL
             print("FROM_PATH_TO_PARCEL")
             if ccs1 == self.path_to_parcel_color:
-                print("LEFT")
-                self._tmp_side_flag = Side.LEFT
-            else:
-                print("RIGHT")
+                print("Right")
                 self._tmp_side_flag = Side.RIGHT
+            else:
+                print("Left")
+                self._tmp_side_flag = Side.LEFT
         if self.current_mission == Mission.FROM_PATH_TO_PARCEL and \
                 (ccs1 == self.parcel_zone_color and ccs2 == self.parcel_zone_color):
             self.current_mission = Mission.PICK_UP
@@ -101,15 +104,14 @@ class TaskExecution:
 
     def run_events(self):
         if self.current_mission is Mission.PATH_TO_PARCEL:
-            self.normal_following(param=60) #black
+            self.normal_following(param=60)  # black
         if self.current_mission is Mission.FROM_PATH_TO_PARCEL:
             self.from_path_to_parcel()
-            self.normal_following(param=30) # ToDo should be param for specific color depends on path_to_parcel_color
+            # ToDo should be param for specific color depends on path_to_parcel_color and for black also 
+            self.normal_following(param=40)
         if self.current_mission is Mission.PICK_UP:
             self.pick_up()
-        # if self.current_mission is Mission.FROM_PATH_TO_PARCEL:
-        #     tank_drive.on_for_seconds(SpeedPercent(30), SpeedPercent(-30), 1)  # turn back            
-        #     exit()
+            exit()
 
 
 class Color(Enum):
@@ -118,9 +120,12 @@ class Color(Enum):
     BLUE = 3
     WHITE = 4
 
+
 class Side(Enum):
     LEFT = 1
     RIGHT = 2
+
+
 class Mission(Enum):
     PICK_UP = 1  # pick up the parcel with medium motor only
     DELIVERY = 2
