@@ -70,12 +70,12 @@ class TaskExecution:
             pass
         elif self._tmp_side_flag == Side.RIGHT:
             tank_drive.on_for_seconds(SpeedPercent(
-                2), SpeedPercent(-10), 1)
+                2), SpeedPercent(-10), 2)
             self._is_turned = True
             print("turn RIGHT for 90")
         elif self._tmp_side_flag == Side.LEFT:
             tank_drive.on_for_seconds(
-                SpeedPercent(-10), SpeedPercent(2), 1)
+                SpeedPercent(-10), SpeedPercent(2), 2)
             self._is_turned = True
             print("turn LEFT for 90")
 
@@ -84,7 +84,7 @@ class TaskExecution:
             tank_drive.on_for_seconds(
                 SpeedPercent(-12), SpeedPercent(12), 3)
             tank_drive.on_for_seconds(
-                SpeedPercent(12), SpeedPercent(12), 3)
+                SpeedPercent(12), SpeedPercent(12), 2)
             self._is_turned = True
             print("turn AROUND")
 
@@ -181,7 +181,7 @@ def check_color(cs):
     # print(r, g, b)
     if r < 80 and g < 80 and b > 100:
         return Color.BLUE, (r+g+b)/3
-    if r > 100 and g < 80 and b < 80:
+    if r > 110 and g < 80 and b < 80:
         return Color.RED, (r+g+b)/3
     if r < 80 and g > 100 and b < 100:
         return Color.GREEN, (r+g+b)/3
