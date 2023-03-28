@@ -33,11 +33,11 @@ class TaskExecution:
         _, avg_left = self.col_sens_1
         _, avg_right = self.col_sens_2
         if abs(avg_right - avg_left) <= 60:
-            tank_drive.on(-15, -15)
+            tank_drive.on(-10, -10)
         elif avg_right > avg_left:
-            tank_drive.on(20, -5)
+            tank_drive.on(15, -5)
         else:
-            tank_drive.on(-5, 20)
+            tank_drive.on(-5, 15)
 
     def correct_picking_position(self):
         print("Correct me!")
