@@ -68,7 +68,7 @@ class TaskExecution:
             SpeedPercent(50), SpeedPercent(-50), 5)  # cheer
     
     def from_path_to_parcel(self):
-        if not self._is_turned:
+        if self._is_turned:
             pass
         elif self._tmp_side_flag == Side.LEFT:
             tank_drive.on_for_seconds(SpeedPercent(-5), SpeedPercent(-20), 1)  # should turn left
