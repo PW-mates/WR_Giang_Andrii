@@ -10,40 +10,10 @@ Truong Giang Do -
 **Robot name - "1010"** </br>
 **Best results - 3m 16s, 2 errors - 24 points** </br>
 
-<style>
-    img {
-        display: block;
-        margin: 0 auto;
-        max-width: 100%;
-        height: auto;
-    }
+|  |  |  |
+| --- | --- | --- |
+| <img src="./images/3.jpeg" alt="photo 3"> | <img src="./images/1.jpeg" alt="photo 1"> | <img src="./images/2.jpeg" alt="photo 2"> | 
 
-    .left-photo {
-        float: left;
-        width: 50%;
-        height: auto;
-    }
-
-    .right-photos {
-        float: right;
-        width: 50%;
-        height: auto;
-    }
-
-    .right-photos img {
-        width: 33.33%;
-        margin-bottom: 10px;
-    }
-</style>
-<div class="left-photo">
-	<img src="./images/3.jpeg" alt="Big photo">
-</div>
-<div class="right-photos">
-    <img src="./images/1.jpeg" alt="Small photo 1">
-    <img src="./images/2.jpeg" alt="Small photo 2">
-    <img src="./images/4.jpeg" alt="Small photo 3">
-</div> </br> </br>
-  _
 
 ## Code:
 Import libs
