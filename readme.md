@@ -3,7 +3,7 @@
 ### The project was done by:
 ```
 Andrii Demydenko - 317084
-Truong Giang Do - 
+Truong Giang Do - 317113
 ```
 
 **Group no. 105** </br>
