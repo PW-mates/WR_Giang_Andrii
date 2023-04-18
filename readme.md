@@ -240,3 +240,37 @@ if __name__ == '__main__':
     print("start")
     main()
 ```
+
+
+### Description of the calibration procedure and its result (what you get in this process and how you use it)
+
+There is no explicit calibration procedure in the given code. The program initializes sensors and motor connections, sets up initial values for certain variables, and then starts a loop that continuously updates sensor data and executes corresponding tasks based on the current mission and sensor data.
+
+### Detailed description of the line tracking algorithm. Among other things, you should draw a block diagram/finite state machine that describes the operation of the program.
+
+The line tracking algorithm is implemented in the normal_following method in the TaskExecution class. The algorithm compares the average values of the two color sensors, which are positioned on the left and right sides of the robot. If the absolute difference between the average values of the two sensors is within a specified parameter (default is 60), the robot moves forward. If the average value of the right sensor is greater than the left sensor, the robot turns left. If the average value of the left sensor is greater than the right sensor, the robot turns right.
+
+The program operates as a finite state machine with the following states: PATH_TO_PARCEL, FROM_PATH_TO_PARCEL, PICK_UP, RETURN_TO_PATH, DELIVERY, LOWER_DOWN. The main loop checks the current mission, updates the sensor data, and runs corresponding events based on the current state.
+
+### Describe the procedure for selecting the parameters of the line tracking algorithm (I hope that you selected them according to some strategy, if completely by chance then you also need to write it down)
+
+There is no specific procedure for selecting the parameters of the line tracking algorithm provided in the code. The parameter for the normal_following method is set to 60 by default, but it can be adjusted to accommodate different line thicknesses, colors, or sensor sensitivity.
+
+### Block diagram/finite state machine/transporter algorithm activity diagram
+
+The finite state machine can be represented as follows:
+
+PATH_TO_PARCEL: The robot follows the line using the line tracking algorithm.
+FROM_PATH_TO_PARCEL: The robot has detected a special color with one of its sensors and now follows the line to the parcel zone.
+PICK_UP: The robot picks up the parcel using the medium motor.
+RETURN_TO_PATH: The robot returns to the main path and continues following it.
+DELIVERY: The robot follows the line to the delivery zone.
+LOWER_DOWN: The robot lowers the parcel at the delivery zone and stops.
+
+### Describe the problems you encountered and how to solve them
+
+The main problem is with the color recognition. The color sensors are not very sensitive and can be easily affected by the ambient light. The color recognition algorithm can be improved by using a more sophisticated algorithm to detect the color of the line.
+
+### Conclusions - e.g. what did you learn in the lab.
+
+The given code demonstrates how to create a line following robot using the LEGO MINDSTORMS EV3 platform. It highlights the use of color sensors for line tracking, medium motor for parcel handling, and finite state machine to control the robot's behavior. This lab exercise provides an opportunity to learn about sensor integration, motor control, and robot navigation through the implementation of a line following algorithm and a finite state machine for controlling the robot's various tasks.
